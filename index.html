@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>afterdot</title>
+<meta name="description" content="Turn your problems into scalable products. We only sell the after.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23D85A30'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Geist+Mono:wght@400&display=swap">
+<style>
+/* Layout: one column, two large type levels only (mark, then statements); the line is the single illustration.
+   Single dark look by choice (Denis, 06.10): no light theme. */
+:root {
+  --bg: #131315;
+  --ink: #ededee;
+  --muted: #9a9aa0;
+  --line: #2c2c30;
+  --surface: #1c1c1f;
+  --flat: #55555b;
+  --coral: #d85a30;
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+a:focus-visible { outline: 2px solid var(--coral); outline-offset: 4px; border-radius: 999px; }
+
+.wrap {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding-inline: clamp(1rem, 4vw, 2.5rem);
+}
+.c { color: var(--coral); }
+
+/* The mark: lowercase "after", weight 500, tight tracking, round coral dot. */
+.mark {
+  display: inline-flex;
+  align-items: baseline;
+  font-size: clamp(4.5rem, 19vw, 11.5rem);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+.mark .dot {
+  display: inline-block;
+  width: 0.2em;
+  height: 0.2em;
+  margin-left: 0.08em;
+  border-radius: 50%;
+  background: var(--coral);
+}
+
+.big {
+  margin: 0;
+  font-size: clamp(2rem, 5.4vw, 3.6rem);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+.big > span { display: block; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.95rem 1.5rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--bg);
+  font-weight: 500;
+  font-size: 1.05rem;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color .15s ease;
+}
+.btn:hover { background: var(--coral); }
+
+/* Hero */
+.hero {
+  display: grid;
+  gap: clamp(1.75rem, 4vw, 2.75rem);
+  justify-items: start;
+  padding-block: clamp(3.5rem, 10vw, 7rem) 0;
+}
+.curve { display: block; width: 100%; height: auto; margin-top: clamp(1rem, 4vw, 2rem); overflow: visible; }
+.curve .before { stroke: var(--flat); }
+.curve .after { stroke: var(--ink); }
+.curve .pt { fill: var(--coral); }
+.curve .tip { stroke: var(--ink); }
+.curve text { fill: var(--muted); font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.04em; }
+/* SVG text scales with the drawing: bump user-unit size so the label stays ~11-15px on screen. */
+@media (max-width: 900px) { .curve text { font-size: 18px; } }
+@media (max-width: 640px) { .curve text { font-size: 26px; } }
+@media (max-width: 460px) { .curve text { font-size: 32px; } }
+.curve .ring { fill: none; stroke: var(--coral); stroke-width: 1.5; opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .curve .ring { transform-origin: 600px 150px; transform-box: view-box; animation: ring 2.8s ease-out infinite; }
+}
+@keyframes ring { 0% { transform: scale(1); opacity: .55; } 80%, 100% { transform: scale(3.2); opacity: 0; } }
+
+/* How we work: a real sequence, one line per step */
+.how { padding-block: clamp(4.5rem, 12vw, 8rem) 0; }
+.eyebrow {
+  margin: 0 0 clamp(1.5rem, 4vw, 2.5rem);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  counter-reset: step;
+}
+.steps li {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  align-items: baseline;
+  padding-block: clamp(1.25rem, 3vw, 1.75rem);
+  border-top: 1px solid var(--line);
+  counter-increment: step;
+  font-size: clamp(1.5rem, 3.6vw, 2.4rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+.steps li::before {
+  content: counter(step, decimal-leading-zero);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.steps li:last-child { border-bottom: 1px solid var(--line); }
+.steps .tell {
+  text-decoration: underline;
+  text-decoration-color: var(--flat);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.15em;
+  transition: color .15s ease, text-decoration-color .15s ease;
+}
+.steps .tell:hover { color: var(--coral); text-decoration-color: var(--coral); }
+
+/* Contact popup: a native dialog over a dimmed page; one email field. */
+.pop {
+  width: min(32rem, calc(100% - 2rem));
+  max-height: calc(100% - 2rem);
+  margin: auto;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface);
+  color: var(--ink);
+}
+/* Padding lives on the inner box, so only a click on the backdrop targets the dialog itself. */
+.pop-inner { position: relative; padding: clamp(1.5rem, 5vw, 2.5rem); }
+.pop::backdrop { background: rgba(8, 8, 10, 0.72); backdrop-filter: blur(6px); }
+.pop h2 {
+  margin: 0;
+  padding-right: 2.5rem;
+  font-size: clamp(1.6rem, 4.5vw, 2.1rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+.pop .note { margin: 0.75rem 0 0; color: var(--muted); }
+.close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.close:hover { color: var(--ink); background: var(--line); }
+.close:focus-visible { outline: 2px solid var(--coral); outline-offset: 2px; }
+.form { display: grid; gap: 1.5rem; justify-items: start; margin-top: 1.75rem; }
+.form[hidden] { display: none; }
+.form .field { display: grid; gap: 0.5rem; width: 100%; }
+.form label { color: var(--muted); font-size: 0.95rem; }
+.form input {
+  width: 100%;
+  padding: 0.6rem 0;
+  border: 0;
+  border-bottom: 1px solid var(--flat);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 1.2rem;
+}
+.form input::placeholder { color: var(--flat); }
+.form input:focus { outline: none; border-bottom-color: var(--coral); }
+.form .btn { border: 0; cursor: pointer; font-family: inherit; }
+.form .btn:focus-visible { outline: 2px solid var(--coral); outline-offset: 4px; }
+.form .btn[disabled] { opacity: .6; cursor: progress; }
+.status { margin: 0; min-height: 1.5em; color: var(--muted); font-size: 0.95rem; }
+.trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.thanks {
+  margin: 1.75rem 0 0;
+  font-size: clamp(1.4rem, 4vw, 1.8rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+footer { padding-block: clamp(4rem, 10vw, 6.5rem) 2.5rem; }
+footer small { color: var(--muted); font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<main>
+
+<div class="hero">
+  <div class="mark" role="img" aria-label="afterdot">after<span class="dot" aria-hidden="true"></span></div>
+  <h1 class="big"><span>Turn your problems into scalable products.</span> <span>We only sell the after<span class="c">.</span></span></h1>
+  <a class="btn" href="#contact" data-open="contact">Tell us your problem</a>
+
+  <svg class="curve" viewBox="0 0 1000 205" role="img" aria-label="A nearly flat grey line breaks upward at a coral point labelled the after, and ends in an arrow.">
+    <defs>
+      <marker id="arrow" viewBox="0 0 10 10" refX="7" refY="5" markerUnits="userSpaceOnUse" markerWidth="18" markerHeight="18" orient="auto">
+        <path class="tip" d="M1 1 L8 5 L1 9" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </marker>
+    </defs>
+    <path class="before" d="M0 152 C 80 149, 140 155, 220 151 S 360 147, 440 152 S 560 154, 600 150" fill="none" stroke-width="2" stroke-linecap="round"/>
+    <path class="after" d="M600 150 C 680 140, 760 104, 840 64 S 940 22, 985 12" fill="none" stroke-width="2.5" stroke-linecap="round" marker-end="url(#arrow)"/>
+    <circle class="ring" cx="600" cy="150" r="9"/>
+    <circle class="pt" cx="600" cy="150" r="9"/>
+    <text x="600" y="195" text-anchor="middle">the after</text>
+  </svg>
+</div>
+
+<section class="how" aria-labelledby="how">
+  <h2 class="eyebrow" id="how">How we work</h2>
+  <ol class="steps">
+    <li><span>You <a class="tell" href="#contact" data-open="contact">tell us the problem</a> you’re eager to solve.</span></li>
+    <li><span>We go deep to find the root cause.</span></li>
+    <li><span>We bring in the people who’ve done it before.</span></li>
+    <li><span>You get the problem solved. Fast<span class="c">.</span></span></li>
+  </ol>
+</section>
+
+<dialog class="pop" id="contact" aria-labelledby="contact-title">
+  <div class="pop-inner">
+  <button class="close" type="button" id="close" aria-label="Close">×</button>
+  <h2 id="contact-title">Tell us the problem<span class="c">.</span></h2>
+  <p class="note">Just leave your email. We’ll write to you and ask the right questions. Digging is what we do.</p>
+  <form class="form" id="problem-form" name="problem" method="POST" data-netlify="true" netlify-honeypot="company">
+    <input type="hidden" name="form-name" value="problem">
+    <p class="trap" aria-hidden="true"><label>Leave this empty <input id="company" name="company" tabindex="-1" autocomplete="off"></label></p>
+    <div class="field">
+      <label for="email">Your email</label>
+      <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@company.com">
+    </div>
+    <button class="btn" type="submit" id="send">Send</button>
+    <p class="status" id="form-status" role="status" aria-live="polite"></p>
+  </form>
+  <p class="thanks" id="thanks" hidden>Thanks. We’ll get back to you<span class="c">.</span></p>
+  </div>
+</dialog>
+
+</main>
+
+<footer>
+  <small>afterdot · © 2026</small>
+</footer>
+</div>
+<script>
+(function () {
+  var form = document.getElementById('problem-form');
+  var thanks = document.getElementById('thanks');
+  var status = document.getElementById('form-status');
+  var send = document.getElementById('send');
+  var pop = document.getElementById('contact');
+  if (pop && pop.showModal) {
+    document.querySelectorAll('[data-open="contact"]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        pop.showModal();
+        document.getElementById('email').focus();
+      });
+    });
+    document.getElementById('close').addEventListener('click', function () { pop.close(); });
+    // A click on the dimmed backdrop lands on the dialog element itself.
+    pop.addEventListener('click', function (e) { if (e.target === pop) pop.close(); });
+  }
+  if (!form || !window.fetch) return;
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    send.disabled = true;
+    status.textContent = 'Sending…';
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(form)).toString()
+    }).then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      status.textContent = '';
+      form.hidden = true;
+      thanks.hidden = false;
+    }).catch(function () {
+      status.textContent = 'Could not send. Check your connection and try again.';
+      send.disabled = false;
+    });
+  });
+})();
+</script>
+</body>
+</html>
